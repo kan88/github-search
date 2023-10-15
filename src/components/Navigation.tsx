@@ -11,7 +11,7 @@ export default function Navigation() {
           <Link to="/">Home Page</Link>
         </li>
         <li>
-          <Link to="/favourites">Home Page</Link>
+          <Link to="/favourites">Favourite Page</Link>
         </li>
       </ul>
     </nav>
