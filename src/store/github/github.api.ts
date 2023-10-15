@@ -4,6 +4,7 @@ import { IServerResponse, IUser } from "../../models/models";
 export const gitHubApi = createApi({
   reducerPath: "github/api",
   baseQuery: fetchBaseQuery({ baseUrl: "https://api.github.com" }),
+  refetchOnFocus: true,
   endpoints: (build) => ({
     searchUsers: build.query<IUser[], string>({
       query: (search: string) => ({

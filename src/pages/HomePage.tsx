@@ -5,13 +5,19 @@ import useDebounce from "../hooks/debounce";
 
 export default function HomePage() {
   const [search, setSearch] = useState("");
+  const [dropdown, setDropdown] = useState(false);
   const debounced = useDebounce(search);
-  const { isLoading, isError, data } = useSearchUsersQuery(debounced, {
+  const {
+    isLoading,
+    isError,
+    data: users,
+  } = useSearchUsersQuery(debounced, {
     skip: debounced.length < 3,
+    refetchOnFocus: true,
   });
   useEffect(() => {
-    console.log(debounced);
-  }, [debounced]);
+    setDropdown(debounced.length > 2 && users?.length! > 0);
+  }, [debounced, users]);
 
   return (
     <section className="">
@@ -29,10 +35,16 @@ export default function HomePage() {
           value={search}
           onChange={(evt) => setSearch(evt.target.value)}
         />
-        <div className="absolute top-[82px] left-0 right-0 max-h-[200px] shadow-md bg-white overflow-scroll">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto,
-          ut!
-        </div>
+        {dropdown && (
+          <ul className="absolute top-[82px] left-0 right-0 max-h-[200px] shadow-md bg-white overflow-y-scroll">
+            {isLoading ?? <p className="text-center">Loading...</p>}
+            {users?.map((user) => (
+              <li className="py-2 px-4 hover:bg-gray-500 hover:text-white transition-colors cursor-pointer">
+                {user.login}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </section>
   );
